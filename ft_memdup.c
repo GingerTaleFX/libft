@@ -27,4 +27,3 @@ void	*ft_memdup(void const *src, size_t len)
 	}
 	return (dst);
 }
-© 2020 GitHub, Inc.

@@ -23,7 +23,11 @@ char		*checkrest(char **p_n, char *rest)
 	}
 	else
 	{
-		str = ft_strnew(ft_strlen(rest) + 1);
+		if (!(str = ft_strnew(ft_strlen(rest) + 1)))
+		{
+			free(str);
+			exit (0);
+		}
 		ft_strcat(str, rest);
 		ft_strclr(rest);
 	}
