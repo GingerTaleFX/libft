@@ -12,62 +12,60 @@
 
 #include "libft.h"
 
-static int	ft_cl(char const *s, char c)
+static char		**memory_giver(char const *str, char c)
 {
-	int j;
+	char	**res;
+	int		letters;
+	int		i;
+	int		j;
 
-	j = 0;
-	while (*s == c)
-		s++;
-	while (*s != c && *s)
-	{
-		j++;
-		s++;
-	}
-	return (j);
-}
-
-static char	**ft_fill_mass(char const *s, char c, int chars, char **ar)
-{
-	char	*tar;
-	size_t	i;
-	size_t	j;
-
-	j = 0;
+	if ((res = (char **)malloc(sizeof(char*) * (ft_cl(str, c) + 1))) == NULL)
+		return (NULL);
 	i = 0;
-	while (*s && chars--)
+	j = 0;
+	while (str[i])
 	{
-		if (!(tar = (char *)malloc(sizeof(*tar) * (ft_cl(s, c) + 1))))
+		letters = 0;
+		while (str[i] == c && str[i])
+			i++;
+		while (str[i] != c && str[i] != '\0')
 		{
-			free(tar);
-			return (0);
+			letters++;
+			i++;
 		}
-		while (*s == c && *s != '\0')
-			s++;
-		while (*s != c && *s)
-			tar[j++] = *(s++);
-		tar[j] = '\0';
-		j = 0;
-		ar[i++] = tar;
-		s++;
+		if (letters > 0)
+			if ((res[j++] = (char *)malloc(sizeof(char) * letters + 1)) == NULL)
+				return (NULL);
 	}
-	ar[i] = 0;
-	return (ar);
+	res[j] = 0;
+	return (res);
 }
 
-char		**ft_strsplit(char const *s, char c)
+char			**ft_strsplit(char const *str, char c)
 {
-	char **ar;
-	char chars;
+	char	**res;
+	int		i;
+	int		j;
+	int		str_number;
+	int		size;
 
-	if (!s || !c)
-		return (0);
-	chars = ft_count_mass(s, c);
-	if (!(ar = (char **)malloc(sizeof(ar) * (chars + 1))))
+	if (str == NULL)
+		return (NULL);
+	size = ft_cl(str, c);
+	res = memory_giver(str, c);
+	if (res == NULL)
+		return (NULL);
+	i = 0;
+	str_number = 0;
+	while (str_number < size)
 	{
-		free(ar);
-		return (0);
+		while (str[i] == c && str[i])
+			i++;
+		j = 0;
+		while (str[i] != c && str[i])
+			res[str_number][j++] = str[i++];
+		res[str_number][j] = '\0';
+		str_number++;
 	}
-	ar = ft_fill_mass(s, c, chars, ar);
-	return (ar);
+	return (res);
 }

@@ -18,6 +18,7 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h>
+# include "get_next_line.h"
 
 typedef	struct	s_list
 {
@@ -40,6 +41,8 @@ int				ft_isalnum(int c);
 int				ft_strequ(char const *s1, char const *s2);
 int				ft_strnequ(char const *s1, char const *s2, size_t n);
 int				ft_count_mass(char const *s, char c);
+int				get_next_line(int fd, char **line);
+int				ft_cl(char const *s, char c);
 void			ft_bzero(void *str, size_t n);
 void			*ft_memset(void *src, int c, size_t len);
 void			*ft_memmove(void *dst, const void *src, size_t len);
