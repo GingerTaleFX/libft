@@ -6,12 +6,12 @@
 typedef struct		s_arr
 {
 	int				fd;
-	char			*rem;
+	char			*rest;
 	struct s_arr	*next;
 }					t_arr;
 
-int					get_line(int fd, char **line, char **rem);
+int					get_line(const int fd, char **line, char *rest);
 int					get_next_line(const int fd, char **line);
-char				*check_rem(char *rem, char **line);
-t_arr				*new_el(int fd);
+char				*checkrest(char **p_n, char *rest);
+t_arr				*newlist(const int fd);
 #endif

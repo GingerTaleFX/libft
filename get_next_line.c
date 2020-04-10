@@ -1,82 +1,78 @@
 #include "get_next_line.h"
 
-char	*check_rem(char *rem, char **line)
+t_arr	*newlist(const int fd)
 {
-	char			*pointer;
+	t_arr	*new;
 
-	pointer = NULL;
-	if (rem)
-	{
-		if ((pointer = ft_strchr(rem, '\n')))
-		{
-			*pointer = '\0';
-			*line = ft_strdup(rem);
-			ft_strcpy(rem, ++pointer);
-		}
-		else
-		{
-			*line = ft_strdup(rem);
-			ft_strclr(rem);
-		}
-	}
-	else
-		*line = ft_strnew(1);
-	return (pointer);
-}
-
-t_arr	*new_el(int fd)
-{
-	t_arr			*new;
-
-	new = (t_arr *)malloc(sizeof(t_arr));
+	if (!(new = (t_arr *)malloc(sizeof(t_arr))))
+		return (NULL);
 	new->fd = fd;
-	new->rem = ft_strnew(BUFF_SIZE);
+	new->rest = ft_strnew(BUFF_SIZE);
 	new->next = NULL;
 	return (new);
 }
 
-int		get_line(int fd, char **line, char **rem)
+char		*checkrest(char **p_n, char *rest)
 {
-	char			buf[BUFF_SIZE + 1];
-	int				b_w_r;
-	char			*p;
-	char			*tmp;
+	char *str;
 
-	b_w_r = 1;
-	p = check_rem(*rem, line);
-	while (p == 0 && (b_w_r = read(fd, buf, BUFF_SIZE)))
+	if ((*p_n = ft_strchr(rest, '\n')) != NULL)
 	{
-		buf[b_w_r] = '\0';
-		if ((p = ft_strchr(buf, '\n')))
-		{
-			*p = '\0';
-			*rem = ft_strdup(++p);
-		}
-		tmp = *line;
-		if (!((*line = ft_strjoin(*line, buf)) || b_w_r < 0))
-			return (-1);
-		free(tmp);
+		str = ft_strsub(rest, 0, *p_n - rest);
+		ft_strcpy(rest, ++(*p_n));
 	}
-	return ((b_w_r || ft_strlen(*line)) ? 1 : 0);
+	else
+	{
+		str = ft_strnew(ft_strlen(rest) + 1);
+		ft_strcat(str, rest);
+		ft_strclr(rest);
+	}
+	return (str);
 }
 
-int		get_next_line(int fd, char **line)
+int		get_line(const int fd, char **line, char *rest)
 {
-	static t_arr	*head;
+	char			buf[BUFF_SIZE + 1];
+	char			*p_n;
+	char			*tmp;
+	int				rd;
+
+	p_n = NULL;
+	rd = 1;
+	*line = checkrest(&p_n, rest);
+	while (p_n == 0 && ((rd = read(fd, buf, BUFF_SIZE)) != 0))
+	{
+		buf[rd] = '\0';
+		if ((p_n = ft_strchr(buf, '\n')) != NULL)
+		{
+			ft_strcpy(rest, ++p_n);
+			ft_strclr(--p_n);
+		}
+		tmp = *line;
+		if (!(*line = ft_strjoin(tmp, buf)) || rd < 0)
+			return (-1);
+		ft_strdel(&tmp);
+	}
+	return ((ft_strlen(*line) || ft_strlen(rest) || rd) ? 1 : 0);
+}
+
+int				get_next_line(const int fd, char **line)
+{
+	static t_arr	*list;
 	t_arr			*tmp;
 	int				ret;
 
-	if (fd < 0 || !line || (read(fd, 0, 0)))
+	if (fd < 0 || line == 0)
 		return (-1);
-	if (head == NULL)
-		head = new_el(fd);
-	tmp = head;
+	if (!list)
+		list = newlist(fd);
+	tmp = list;
 	while (tmp->fd != fd)
 	{
 		if (tmp->next == NULL)
-			tmp->next = new_el(fd);
+			tmp->next = newlist(fd);
 		tmp = tmp->next;
 	}
-	ret = get_line(tmp->fd, line, &tmp->rem);
+	ret = get_line(fd, line, tmp->rest);
 	return (ret);
 }

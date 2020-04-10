@@ -1,24 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memalloc.c                                      :+:      :+:    :+:   */
+/*   ft_memdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kroselin <kroselin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/16 12:48:33 by kroselin          #+#    #+#             */
-/*   Updated: 2019/09/16 17:05:11 by kroselin         ###   ########.fr       */
+/*   Created: 2019/09/16 13:19:09 by kroselin          #+#    #+#             */
+/*   Updated: 2019/09/16 13:29:54 by kroselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memalloc(size_t size)
+void	*ft_memdup(void const *src, size_t len)
 {
-	char *temp;
+	void	*dst;
+	size_t	i;
 
-	temp = (char *)malloc(size);
-	if (temp == NULL || size == 0)
+	i = 0;
+	if ((dst = malloc(len)) == NULL)
 		return (NULL);
-	ft_bzero(temp, size);
-	return ((void *)temp);
+	while (i < len)
+	{
+		((char*)dst)[i] = ((char*)src)[i];
+		i++;
+	}
+	return (dst);
 }
+© 2020 GitHub, Inc.
