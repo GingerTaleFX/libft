@@ -14,21 +14,19 @@
 
 char	*ft_strdup(const char *src)
 {
-	size_t	index;
-	char	*dest;
+	int		len;
+	char	*str;
 
-	index = ft_strlen(src);
-	if (index + 1 == 0)
-		return (0);
-	dest = ft_memalloc(index + 1);
-	if (!dest)
-		return (0);
-	while (*src != '\0')
+	len = 0;
+	while (src[len])
+		len++;
+	str = (char*)malloc(len + 1);
+	if (str == NULL)
+		return (NULL);
+	while (len >= 0)
 	{
-		*dest = *src;
-		dest++;
-		src++;
+		str[len] = src[len];
+		len--;
 	}
-	*dest = '\0';
-	return (dest - index);
+	return (str);
 }

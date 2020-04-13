@@ -12,6 +12,25 @@
 
 #include "libft.h"
 
+static int		words(char const *str, char c)
+{
+	int i;
+	int words;
+
+	words = 0;
+	i = 0;
+	while (str[i])
+	{
+		while (str[i] == c && str[i] != '\0')
+			i++;
+		if (str[i])
+			words++;
+		while (str[i] != c && str[i] != '\0')
+			i++;
+	}
+	return (words);
+}
+
 static char		**memory_giver(char const *str, char c)
 {
 	char	**res;
@@ -19,7 +38,7 @@ static char		**memory_giver(char const *str, char c)
 	int		i;
 	int		j;
 
-	if ((res = (char **)malloc(sizeof(char*) * (ft_cl(str, c) + 1))) == NULL)
+	if ((res = (char **)malloc(sizeof(char*) * (words(str, c) + 1))) == NULL)
 		return (NULL);
 	i = 0;
 	j = 0;
@@ -51,7 +70,7 @@ char			**ft_strsplit(char const *str, char c)
 
 	if (str == NULL)
 		return (NULL);
-	size = ft_cl(str, c);
+	size = words(str, c);
 	res = memory_giver(str, c);
 	if (res == NULL)
 		return (NULL);

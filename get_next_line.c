@@ -1,4 +1,4 @@
-#include "get_next_line.h"
+#include "libft.h"
 
 t_arr	*newlist(const int fd)
 {
@@ -23,11 +23,7 @@ char		*checkrest(char **p_n, char *rest)
 	}
 	else
 	{
-		if (!(str = ft_strnew(ft_strlen(rest) + 1)))
-		{
-			free(str);
-			exit (0);
-		}
+		str = ft_strnew(ft_strlen(rest) + 1);
 		ft_strcat(str, rest);
 		ft_strclr(rest);
 	}
