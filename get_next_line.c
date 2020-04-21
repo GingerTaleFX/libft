@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ginger <ginger@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/04/15 16:52:07 by ginger            #+#    #+#             */
+/*   Updated: 2020/04/15 16:52:07 by ginger           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
-t_arr	*newlist(const int fd)
+t_arr				*newlist(const int fd)
 {
-	t_arr	*new;
+	t_arr			*new;
 
 	if (!(new = (t_arr *)malloc(sizeof(t_arr))))
 		return (NULL);
@@ -12,9 +24,9 @@ t_arr	*newlist(const int fd)
 	return (new);
 }
 
-char		*checkrest(char **p_n, char *rest)
+char				*checkrest(char **p_n, char *rest)
 {
-	char *str;
+	char			*str;
 
 	if ((*p_n = ft_strchr(rest, '\n')) != NULL)
 	{
@@ -30,7 +42,7 @@ char		*checkrest(char **p_n, char *rest)
 	return (str);
 }
 
-int		get_line(const int fd, char **line, char *rest)
+int					get_line(const int fd, char **line, char *rest)
 {
 	char			buf[BUFF_SIZE + 1];
 	char			*p_n;
@@ -56,7 +68,7 @@ int		get_line(const int fd, char **line, char *rest)
 	return ((ft_strlen(*line) || ft_strlen(rest) || rd) ? 1 : 0);
 }
 
-int				get_next_line(const int fd, char **line)
+int					get_next_line(const int fd, char **line)
 {
 	static t_arr	*list;
 	t_arr			*tmp;
